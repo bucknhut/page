@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bugs & Hut | 벅스앤헛 디저트카페</title>
+    
+    <!-- 구글 폰트: Noto Sans KR -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- 아이콘 폰트 라이브러리 (이모지 대체용) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* 1. 디자인 시스템 변수 설정 (CSS Variables) */
+        :root {
+            --color-primary: #007BFF;
+            --color-white: #FFFFFF;
+            --color-text-dark: #333333;
+            --color-text-light: #666666;
+            --color-bg-light: #F8F9FA;
+            --spacing-section: 120px 20px;
+        }
+
+        /* 2. 초기화 및 기본 설정 (Reset & Base) */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth; /* 부드러운 스크롤 이동 */
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--color-text-dark);
+            background-color: var(--color-white);
+            line-height: 1.6;
+            word-break: keep-all; /* 한국어 줄바꿈 최적화 */
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* 3. 공통 레이아웃 (Common Layout) */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        section {
+            padding: var(--spacing-section);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: var(--color-text-light);
+        }
+
+        /* 4. 헤더 (Header) */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(255, 255, 255, 0.95);
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: box-shadow 0.3s ease;
+        }
+
+        header.scrolled {
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* 스크롤 시 그림자 효과 */
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-menu a {
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: var(--color-primary);
+        }
+
+        /* 5. 히어로 섹션 (Hero Section) */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                        url('https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&q=80&w=2000') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--color-white);
+            padding-top: 80px; /* 헤더 높이만큼 보정 */
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.3;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        /* 6. 소개 섹션 (About Us) */
+        .about-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-content p {
+            font-size: 1.1rem;
+            margin-bottom: 24px;
+            color: var(--color-text-light);
+        }
+
+        .about-highlight {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--color-primary);
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid var(--color-primary);
+            border-radius: 8px;
+        }
+
+        /* 7. 제품 섹션 (Products) */
+        .products {
+            background-color: var(--color-bg-light);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: var(--color-white);
+            padding: 40px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 123, 255, 0.1);
+        }
+
+        .product-icon {
+            font-size: 2.5rem;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+        }
+
+        .product-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+        }
+
+        .product-card p {
+            color: var(--color-text-light);
+            font-size: 0.95rem;
+        }
+
+        /* 8. 서비스 섹션 (Services) */
+        .service-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .service-item {
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .service-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            opacity: 0.5;
+            line-height: 1;
+        }
+
+        .service-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .service-info p {
+            color: var(--color-text-light);
+        }
+
+        /* 9. 예약 및 위치 섹션 (Booking & Location) */
+        .booking {
+            background-color: var(--color-bg-light);
+        }
+
+        .booking-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 450px;
+            background-color: #E9ECEF;
+            border: 2px dashed #CED4DA;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+        }
+
+        .info-panel {
+            padding: 20px 0;
+        }
+
+        .info-list li {
+            display: flex;
+            margin-bottom: 16px;
+            font-size: 1.1rem;
+        }
+
+        .info-list i {
+            color: var(--color-primary);
+            width: 30px;
+            padding-top: 4px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 8px;
+            margin-top: 30px;
+            transition: background-color 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        /* 10. 푸터 (Footer) */
+        footer {
+            background-color: var(--color-text-dark);
+            color: var(--color-white);
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .footer-info {
+            color: #999999;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-links a {
+            color: var(--color-white);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--color-primary);
+        }
+
+        /* 11. 반응형 디자인 (Media Queries) */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none; /* 모바일에서는 내비게이션 숨김 (실무에서는 햄버거 메뉴 구현) */
+            }
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .booking-grid {
+                grid-template-columns: 1fr;
+            }
+            .map-placeholder {
+                height: 300px;
+            }
+            :root {
+                --spacing-section: 80px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 헤더 영역 -->
+    <header id="header">
+        <div class="header-inner">
+            <a href="#" class="logo">Bugs & Hut</a>
+            <nav class="nav-menu">
+                <a href="#about">About</a>
+                <a href="#products">Products</a>
+                <a href="#services">Services</a>
+                <a href="#booking">Booking</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 메인 히어로 영역 -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>당신의 일상에 스며드는<br>완벽한 휴식, 벅스앤헛</h1>
+            <p>스페셜티 커피와 수제 디저트가 만드는 특별한 순간</p>
+        </div>
+    </section>
+
+    <!-- 소개 영역 -->
+    <section id="about" class="container">
+        <div class="section-header">
+            <h2>About Us</h2>
+            <p>벅스앤헛의 철학과 가치</p>
+        </div>
+        <div class="about-content">
+            <p>벅스앤헛은 타협하지 않는 품질을 위해 세계적인 커피 품질 평가 대회인 <strong>COE(Cup of Excellence)</strong>에서 수상한 최고 등급의 원두만을 선별하여 제공합니다.</p>
+            <p>숙련된 바리스타의 정교한 로스팅과 추출 기술을 통해 원두 본연의 섬세한 향미를 이끌어냅니다.</p>
+            <div class="about-highlight">
+                "매일 아침 굽는 디저트와 엄선된 커피"
+            </div>
+        </div>
+    </section>
+
+    <!-- 제품 영역 -->
+    <section id="products" class="products">
+        <div class="container">
+            <div class="section-header">
+                <h2>Our Products</h2>
+                <p>전문가의 손길로 완성된 시그니처 메뉴</p>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <i class="fa-solid fa-mug-hot product-icon"></i>
+                    <h3>스페셜티 핸드드립</h3>
+                    <p>최상급 싱글 오리진 원두의 풍부한 향미를 살린 브루잉 커피</p>
+                </div>
+                <div class="product-card">
+                    <i class="fa-solid fa-cake-candles product-icon"></i>
+                    <h3>수제 바스크 치즈케이크</h3>
+                    <p>매일 아침 매장에서 직접 구워내는 깊고 진한 풍미의 디저트</p>
+                </div>
+                <div class="product-card">
+                    <i class="fa-solid fa-seedling product-icon"></i>
+                    <h3>시그니처 커피 원두</h3>
+                    <p>벅스앤헛만의 로스팅 프로파일이 적용된 홈카페용 홀빈</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 서비스 영역 -->
+    <section id="services" class="container">
+        <div class="section-header">
+            <h2>Special Services</h2>
+            <p>벅스앤헛만의 특별한 맞춤형 경험</p>
+        </div>
+        <div class="service-container">
+            <div class="service-item">
+                <div class="service-number">01</div>
+                <div class="service-info">
+                    <h3>개인별 원두 큐레이션</h3>
+                    <p>고객님의 평소 선호하는 맛(산미, 바디감, 단맛 등)을 심층적으로 분석하여, 현재 준비된 라인업 중 가장 완벽하게 부합하는 최적의 원두를 추천해 드립니다.</p>
+                </div>
+            </div>
+            <div class="service-item">
+                <div class="service-number">02</div>
+                <div class="service-info">
+                    <h3>맞춤형 브루잉 피팅 서비스</h3>
+                    <p>가정에서 사용하시는 추출 도구(핸드드립, 모카포트, 머신 등)의 특성을 파악하여, 그에 맞는 최적의 원두 분쇄도를 설정하고 추출 레시피를 가이드해 드립니다.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 예약 및 위치 영역 -->
+    <section id="booking" class="booking">
+        <div class="container">
+            <div class="section-header">
+                <h2>Booking & Location</h2>
+                <p>오시는 길 안내 및 방문 예약</p>
+            </div>
+            <div class="booking-grid">
+                <div class="map-placeholder">
+                    <span>[ 구글 지도 API 연동 영역 ]</span>
+                </div>
+                <div class="info-panel">
+                    <ul class="info-list">
+                        <li>
+                            <i class="fa-solid fa-location-dot"></i>
+                            <div><strong>주소:</strong> 서울특별시 용산구 한남동 123, 1층 벅스앤헛</div>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone"></i>
+                            <div><strong>연락처:</strong> 02-1234-5678</div>
+                        </li>
+                        <li>
+                            <i class="fa-regular fa-clock"></i>
+                            <div><strong>운영시간:</strong> 매일 10:00 - 22:00 (라스트오더 21:30)</div>
+                        </li>
+                    </ul>
+                    <a href="#" class="btn-primary">방문 예약 및 포장 주문하기</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 푸터 영역 -->
+    <footer>
+        <div class="container">
+            <a href="#" class="footer-logo">Bugs & Hut</a>
+            <div class="footer-info">
+                Copyright 2026. Bugs & Hut All rights reserved.<br>
+                대표: 김수장 | 사업자등록번호: 123-45-67890
+            </div>
+            <div class="social-links">
+                <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 자바스크립트 영역 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. 헤더 스크롤 효과 (Sticky Header UI)
+            const header = document.getElementById('header');
+            
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // 2. 부드러운 스크롤 (Smooth Scroll Navigation)
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if(targetId === '#') return; // 로고 클릭 예외 처리
+                    
+                    const targetSection = document.querySelector(targetId);
+                    if(targetSection) {
+                        // 헤더 높이(80px)를 고려하여 스크롤 위치 계산
+                        const headerHeight = header.offsetHeight;
+                        const elementPosition = targetSection.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+        
+                        window.scrollTo({
+                            top: offsetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
